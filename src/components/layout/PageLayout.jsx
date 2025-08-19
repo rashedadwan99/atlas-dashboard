@@ -1,13 +1,13 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../header/Sidebar";
-import { Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 export default function PageLayout() {
   return (
     <>
       <Sidebar />
-      <Row className="mt-2">
+      <Container fluid className="mt-5">
         <Outlet />
-      </Row>
+      </Container>
     </>
   );
 }

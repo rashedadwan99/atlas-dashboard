@@ -7,15 +7,22 @@ import { getAdsAction } from "../redux/actions/adActions";
 import { getGeneralDataAction } from "../redux/actions/generalDataActions";
 import { routes } from "./routes";
 import { useEffect } from "react";
+import AddCategories from "../pages/categories/AddCategories";
+import ViewCategories from "../pages/categories/ViewCategories";
+import AddSponsors from "../pages/sponsors/AddSponsors";
+import ViewSponsors from "../pages/sponsors/ViewSponsors";
+import { getMyProfileAction } from "../redux/actions/userActions";
 
 function MainRoutes() {
   const { isAuth } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
   useEffect(() => {
+    if (isAuth) {
+      dispatch(getMyProfileAction());
+    }
     dispatch(getAdsAction());
     dispatch(getGeneralDataAction());
-  }, [isAuth, dispatch]);
+  }, [isAuth]);
 
   return (
     <Routes>
@@ -26,8 +33,32 @@ function MainRoutes() {
       >
         {/* هنا يمكن تضع المزيد من المسارات الفرعية */}
         <Route
-          path=""
+          path={routes.dashboardRoute}
           element={isAuth ? <Dashboard /> : <Navigate to={routes.loginRoute} />}
+        />
+        <Route
+          path={routes.addCategory}
+          element={
+            isAuth ? <AddCategories /> : <Navigate to={routes.loginRoute} />
+          }
+        />
+        <Route
+          path={routes.viewCategories}
+          element={
+            isAuth ? <ViewCategories /> : <Navigate to={routes.loginRoute} />
+          }
+        />
+        <Route
+          path={routes.addSponsor}
+          element={
+            isAuth ? <AddSponsors /> : <Navigate to={routes.loginRoute} />
+          }
+        />
+        <Route
+          path={routes.viewSponsors}
+          element={
+            isAuth ? <ViewSponsors /> : <Navigate to={routes.loginRoute} />
+          }
         />
       </Route>
 

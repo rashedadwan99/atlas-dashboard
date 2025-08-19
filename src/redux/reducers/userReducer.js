@@ -19,7 +19,7 @@ export const userReducer = (state = initialState, action) => {
         isAuth: !state.isAuth,
       };
     case GET_MY_PROFILE:
-      return { ...state, isAuth: true, value: { name: action.payload?.name } };
+      return { ...state, isAuth: true, value: { name: action.payload.name } };
     case TOGGLE_LOADING:
       return { ...state, isSendingRequest: action.payload?.isSendingRequest };
 

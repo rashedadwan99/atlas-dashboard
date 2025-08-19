@@ -24,10 +24,16 @@ function LoginPage() {
     try {
       setIsLoading(true);
       const { data: user } = await loginService(data);
-      dispatch(toggleAuthAction());
-      setUserToken(user.api_token);
-      setIsLoading(false);
-      CToast("success", t("login-message")); // ترجمة رسالة النجاح
+      if (data.isAdmin) {
+        setUserToken(user.api_token);
+        setIsLoading(false);
+        dispatch(toggleAuthAction(user));
+        CToast("success", t("login-message"));
+      } else {
+        const err = new Error("Unauthorized access");
+        err.status = 401;
+        throw err;
+      }
     } catch (ex) {
       setIsLoading(false);
     }

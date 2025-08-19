@@ -1,17 +1,46 @@
 import axios from "axios";
 import { CToast } from "../components/common/toast/CToast";
+import i18n from "../i18n"; // أو من أي مكان تستخدم فيه i18n
 
-// Global error interceptor
+// 🟡 تحديد اللغة الحالية من i18n
+export const getCurrentLang = () => i18n.language || "en";
+
+// 🟢 Interceptor لتعديل كل الطلبات قبل الإرسال
+axios.interceptors.request.use((config) => {
+  const lang = getCurrentLang();
+
+  // إذا كان POST أو PUT أو DELETE ضيف اللغة في البودي
+  if (["post", "put", "delete"].includes(config.method)) {
+    if (typeof config.data === "object") {
+      config.data = {
+        ...config.data,
+        lang,
+      };
+    } else {
+      config.data = { lang };
+    }
+  }
+
+  // إذا GET ضيفها كـ query param
+  if (config.method === "get") {
+    config.params = {
+      ...config.params,
+      lang,
+    };
+  }
+
+  return config;
+});
+
+// 🔴 Interceptor للأخطاء
 axios.interceptors.response.use(
-  (response) => response, // If successful, just return response
+  (response) => response,
   (error) => {
     const { response } = error;
 
-    // If error has a response from server
     if (response) {
       const { status, data } = response;
 
-      // Show error message based on status
       if (status === 400 && data?.message) {
         CToast("error", data.message);
       } else if (status === 401) {
@@ -35,7 +64,7 @@ axios.interceptors.response.use(
   }
 );
 
-// Exporting wrapped HTTP methods
+// ✅ تصدير الطرق
 export const http = {
   get: axios.get,
   post: axios.post,

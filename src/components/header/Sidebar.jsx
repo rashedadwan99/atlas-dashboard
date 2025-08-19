@@ -131,9 +131,9 @@ export default function Sidebar() {
         return (
           <Box key={item.segment}>
             <ListItem
+              button="true"
               onClick={() => handleToggleItem(item.segment)}
               sx={{ pl: 2 + depth * 4, cursor: "pointer", my: 0.8 }}
-              button
             >
               <ListItemIcon sx={{ color: "var(--dark-blue)", minWidth: 32 }}>
                 {item.icon}

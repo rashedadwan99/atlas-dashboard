@@ -6,11 +6,9 @@ import {
   Typography,
   IconButton,
   Chip,
-  ImageList,
-  ImageListItem,
-  Divider,
 } from "@mui/material";
 import { FiTrash2, FiUploadCloud } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
 import "./CFilePicker.css";
 
 export default function FilePicker({
@@ -24,7 +22,9 @@ export default function FilePicker({
   onChange,
   disabled = false,
   name = "files",
+  labelTextKey = "",
 }) {
+  const { t } = useTranslation();
   const inputRef = useRef(null);
   const [internalFiles, setInternalFiles] = useState([]);
   const files = value ?? internalFiles;
@@ -38,13 +38,17 @@ export default function FilePicker({
     }));
   }, [files]);
 
+  const translatedLabel = useMemo(() => {
+    return labelTextKey ? t(labelTextKey) : "";
+  }, [labelTextKey, t]);
+
   const validate = (candidate) => {
-    if (candidate.length > maxFiles) return `Max ${maxFiles} files allowed.`;
+    if (candidate.length > maxFiles) return t("max_files_error", { maxFiles });
 
     for (const f of candidate) {
       const sizeMB = f.size / (1024 * 1024);
       if (sizeMB > maxSizeMB)
-        return `File "${f.name}" exceeds ${maxSizeMB} MB.`;
+        return t("max_size_error", { name: f.name, maxSizeMB });
     }
 
     return "";
@@ -54,7 +58,6 @@ export default function FilePicker({
     const incoming = Array.from(fileList || []);
     const merged = multiple ? [...files, ...incoming] : incoming.slice(0, 1);
 
-    // إزالة الملفات المكررة
     const unique = [];
     const seen = new Set();
     for (const f of merged) {
@@ -89,7 +92,13 @@ export default function FilePicker({
   };
 
   return (
-    <Stack spacing={1.25}>
+    <Stack spacing={1.25} alignItems="center">
+      {translatedLabel && (
+        <Typography variant="subtitle1" align="center">
+          {translatedLabel}
+        </Typography>
+      )}
+
       <input
         ref={inputRef}
         type="file"
@@ -98,7 +107,7 @@ export default function FilePicker({
         multiple={multiple}
         onChange={(e) => {
           applyFiles(e.target.files);
-          e.target.value = ""; // تنظيف القيمة حتى يمكن رفع نفس الملفات مرة أخرى
+          e.target.value = "";
         }}
         disabled={disabled}
         name={name}
@@ -111,11 +120,11 @@ export default function FilePicker({
           onClick={() => inputRef.current?.click()}
           disabled={disabled}
         >
-          {label}
+          {t("choose_files")}
         </Button>
 
         <Chip
-          label={`Selected: ${files.length}`}
+          label={`${t("selected")}: ${files.length}`}
           variant="outlined"
           size="small"
         />
@@ -127,7 +136,7 @@ export default function FilePicker({
             onClick={clearAll}
             disabled={disabled}
           >
-            Clear
+            {t("clear")}
           </Button>
         )}
       </Stack>
@@ -139,65 +148,19 @@ export default function FilePicker({
       )}
 
       {files.length > 0 && (
-        <Box>
-          <Divider sx={{ my: 1 }} />
-
-          {/* Image Previews */}
-          {previewUrls.some((p) => p.type.startsWith("image")) && (
-            <ImageList cols={3} gap={8} sx={{ m: 0, mb: 2 }}>
-              {previewUrls
-                .filter((p) => p.type.startsWith("image"))
-                .map((p, i) => (
-                  <ImageListItem key={p.url}>
-                    <img
-                      src={p.url}
-                      alt={p.name}
-                      loading="lazy"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        borderRadius: 8,
-                      }}
-                    />
-                    <Stack
-                      direction="row"
-                      alignItems="center"
-                      justifyContent="space-between"
-                      sx={{ mt: 0.5 }}
-                    >
-                      <Typography variant="caption" noWrap title={p.name}>
-                        {p.name}
-                      </Typography>
-                      <IconButton size="small" onClick={() => removeAt(i)}>
-                        <FiTrash2 size={16} />
-                      </IconButton>
-                    </Stack>
-                  </ImageListItem>
-                ))}
-            </ImageList>
-          )}
-
-          {/* Video Previews */}
-          {previewUrls.some((p) => p.type.startsWith("video")) &&
-            previewUrls
-              .filter((p) => p.type.startsWith("video"))
+        <Box width="100%" display="flex" justifyContent="center" mt={2}>
+          <Box sx={{ width: "100%" }}>
+            {/* Image Previews */}
+            {previewUrls
+              .filter((p) => p.type.startsWith("image"))
               .map((p, i) => (
-                <Box
-                  key={p.url}
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    mb: 2,
-                  }}
-                >
-                  <video
+                <Box key={p.url} sx={{ mb: 2 }}>
+                  <img
                     src={p.url}
-                    controls
+                    alt={p.name}
+                    loading="lazy"
                     style={{
                       width: "100%",
-                      maxWidth: 600,
                       objectFit: "cover",
                       borderRadius: 8,
                     }}
@@ -206,7 +169,7 @@ export default function FilePicker({
                     direction="row"
                     alignItems="center"
                     justifyContent="space-between"
-                    sx={{ width: "100%", maxWidth: 600, mt: 0.5 }}
+                    sx={{ mt: 0.5 }}
                   >
                     <Typography variant="caption" noWrap title={p.name}>
                       {p.name}
@@ -217,6 +180,37 @@ export default function FilePicker({
                   </Stack>
                 </Box>
               ))}
+
+            {/* Video Previews */}
+            {previewUrls
+              .filter((p) => p.type.startsWith("video"))
+              .map((p, i) => (
+                <Box key={p.url} sx={{ mb: 2 }}>
+                  <video
+                    src={p.url}
+                    controls
+                    style={{
+                      width: "100%",
+                      objectFit: "cover",
+                      borderRadius: 8,
+                    }}
+                  />
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    sx={{ mt: 0.5 }}
+                  >
+                    <Typography variant="caption" noWrap title={p.name}>
+                      {p.name}
+                    </Typography>
+                    <IconButton size="small" onClick={() => removeAt(i)}>
+                      <FiTrash2 size={16} />
+                    </IconButton>
+                  </Stack>
+                </Box>
+              ))}
+          </Box>
         </Box>
       )}
     </Stack>

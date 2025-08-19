@@ -8,7 +8,7 @@ function AuthLayoutComponent({ children, className = "" }) {
       <Row
         className={`auth_page justify-content-center align-items-center ${className}`}
       >
-        <Col xs={11} sm={11} lg={5} className="py-3 auth_form">
+        <Col xs={11} sm={11} md={6} lg={5} className="py-3 auth_form">
           {children}
         </Col>
       </Row>

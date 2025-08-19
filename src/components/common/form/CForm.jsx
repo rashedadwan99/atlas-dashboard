@@ -107,7 +107,7 @@ const CForm = memo(({ data, fields, setData, loading, title, doSubmit }) => {
               </label>
             </div>
           ) : (
-            <Col key={i} sm={f?.sm ?? 12} className="my-2">
+            <Col key={i} sm={f?.sm ?? 12} md={f?.md ?? 12} className="my-2">
               <CInput
                 label={t(f?.label)}
                 id={f?.id}

@@ -18,7 +18,7 @@ const COLORS = ["var(--dark-blue)", "var(--light-blue)"];
 function Dashboard() {
   const { categories } = useSelector((state) => state.generalData);
   const { allAds } = useSelector((state) => state.ads);
-  const { user } = useSelector((state) => state.user);
+  const { value: user } = useSelector((state) => state.user);
   const { t } = useTranslation();
 
   const adsCount = allAds?.length || 0;
@@ -38,7 +38,7 @@ function Dashboard() {
   ];
 
   return (
-    <Container fluid className="mt-5">
+    <>
       {/* الترحيب */}
       <Row className="mb-4">
         <Col>
@@ -74,7 +74,7 @@ function Dashboard() {
           </div>
         </Col>
       </Row>
-    </Container>
+    </>
   );
 }
 
