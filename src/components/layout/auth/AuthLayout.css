@@ -1,0 +1,29 @@
+.auth_page {
+  /* background-color: var(--blue-gray); */
+  min-height: 100vh !important;
+  background: var(--liner-background);
+}
+
+.auth_form {
+
+  background-color: var(--white);
+  border-radius: 5px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: var(--box-shadow);
+}
+
+/* .auth_page */
+.auth_page_img {
+  width: 100%;
+  height: 400px;
+}
+
+@media (max-width:992px) {
+
+  .auth_page_img {
+    display: none;
+  }
+}

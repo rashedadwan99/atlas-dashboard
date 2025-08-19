@@ -1,0 +1,25 @@
+form .MuiInputBase-root,
+form input,
+form .MuiFormControl-root {
+  width: 100% !important;
+}
+
+form input,
+form button,
+form .MuiButtonBase-root {
+  font-size: 14px !important;
+}
+
+form h3 {
+  text-transform: capitalize;
+}
+
+form .checkbox-label {
+  font-size: "0.9rem";
+  text-decoration: underline;
+}
+
+form .checkbox-label:hover {
+  color: var(--dark-blue);
+  cursor: pointer;
+}

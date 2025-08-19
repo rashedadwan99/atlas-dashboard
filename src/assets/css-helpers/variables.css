@@ -1,0 +1,8 @@
+:root {
+  --dark-blue: #29368f;
+  --light-blue: #5aafde;
+  --blue-gray: #e7f0f2;
+  --white: #ffffff;
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --liner-background: linear-gradient(to bottom, var(--blue-gray) 70%, rgba(255, 255, 255, 0.5))
+}

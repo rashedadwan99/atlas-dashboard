@@ -1,0 +1,22 @@
+.MuiStack-root {
+  margin: 0 auto !important;
+}
+
+.MuiStack-root img {
+  height: 200px !important;
+  width: 100% !important;
+}
+
+.MuiStack-root video {
+  max-height: 400px !important;
+  width: 100% !important;
+}
+
+.css-xjohuq-MuiImageListItem-root {
+  align-items: center !important;
+}
+
+.css-7d6p4z-MuiImageList-root {
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 1px !important;
+}

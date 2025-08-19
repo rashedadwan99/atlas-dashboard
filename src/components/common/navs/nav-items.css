@@ -1,0 +1,8 @@
+.nav-link {
+  z-index: 3;
+}
+
+.nav-link.active {
+  font-weight: bold;
+  color: black !important;
+}

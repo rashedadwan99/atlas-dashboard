@@ -1,0 +1,37 @@
+/* .ads_container {} */
+
+.ad_box {
+  background-color: var(--white);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  padding: 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.ad_box_title {
+  font-size: 16px;
+}
+
+.ad_box_price {
+  color: var(--dark-blue);
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.ad_box_description {
+  font-size: 15px;
+}
+
+
+
+.ad_box_img_title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.ad-img {
+  height: 100px;
+  width: 100px;
+  border-radius: 5px;
+}

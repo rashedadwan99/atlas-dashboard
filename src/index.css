@@ -1,0 +1,30 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import "react-toastify/dist/ReactToastify.css";
+@import url("./assets/css-helpers/variables.css");
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import '@fontsource/roboto/300.css';
+@import '@fontsource/roboto/400.css';
+@import '@fontsource/roboto/500.css';
+@import '@fontsource/roboto/700.css';
+
+body {
+  margin: 0;
+  font-size: 18px;
+  overflow-x: hidden;
+  /* background-color: var(--blue-gray) !important; */
+  min-height: 100vh;
+
+}
+
+ul {
+  padding: 0 !important;
+  width: 100%;
+}
+
+p {
+  white-space: pre-line !important;
+}
+
+* {
+  font-family: "Work Sans", sans-serif !important;
+}
