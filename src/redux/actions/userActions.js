@@ -10,10 +10,7 @@ export const getMyProfileAction = () => {
   return async (dispatch) => {
     try {
       const { data: user } = await getMyProfileService();
-      // setUserToken(user.api_token);
-      if (user.api_token) {
-        dispatch({ type: GET_MY_PROFILE, payload: { name: user.name } });
-      } else throw new Error("an error has been occurred");
+      dispatch({ type: GET_MY_PROFILE, payload: { name: user.name } });
     } catch (ex) {}
   };
 };

@@ -30,6 +30,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { routes } from "../../routes/routes";
 import { Row } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 const drawerWidth = 340;
 
@@ -119,7 +120,7 @@ export default function Sidebar() {
     handleMenuClose();
     console.log("Profile clicked");
   };
-
+  const { value: user } = useSelector((state) => state.user);
   const renderNavItems = (items, depth = 0) =>
     items.map((item, index) => {
       if (item.kind === "divider") {
@@ -230,11 +231,10 @@ export default function Sidebar() {
               color: "white",
             }}
           >
-            <Avatar
-              alt="User Avatar"
-              src="/static/images/avatar/1.jpg"
-              sx={{ backgroundColor: "var(--light-blue)" }}
-            />
+            <Avatar sx={{ backgroundColor: "var(--light-blue)" }}>
+              {user?.name?.[0]}
+            </Avatar>
+
             <ArrowDropDownIcon sx={{ color: "var(--dark-blue)" }} />
           </Box>
 
