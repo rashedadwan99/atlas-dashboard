@@ -7,13 +7,15 @@ import { getAdsAction } from "../redux/actions/adActions";
 import { getGeneralDataAction } from "../redux/actions/generalDataActions";
 import { routes } from "./routes";
 import { useEffect } from "react";
-import AddCategories from "../pages/categories/AddCategories";
+import AddCategories from "../pages/categories/CategoriesForms";
 import ViewCategories from "../pages/categories/ViewCategories";
-import AddSponsors from "../pages/sponsors/AddSponsors";
+import AddSponsors from "../pages/sponsors/SponsorsForms";
 import ViewSponsors from "../pages/sponsors/ViewSponsors";
 import { getMyProfileAction } from "../redux/actions/userActions";
 import { getUserToken } from "../services/userService";
 import EditCategory from "../components/categories/EditCategory";
+import CategoriesForms from "../pages/categories/CategoriesForms";
+import SponsorsForms from "../pages/sponsors/SponsorsForms";
 
 function MainRoutes() {
   const { isAuth } = useSelector((state) => state.user);
@@ -41,13 +43,13 @@ function MainRoutes() {
         <Route
           path={routes.addCategory}
           element={
-            isAuth ? <AddCategories /> : <Navigate to={routes.loginRoute} />
+            isAuth ? <CategoriesForms /> : <Navigate to={routes.loginRoute} />
           }
         />
         <Route
           path={routes.editCategory}
           element={
-            isAuth ? <EditCategory /> : <Navigate to={routes.loginRoute} />
+            isAuth ? <CategoriesForms /> : <Navigate to={routes.loginRoute} />
           }
         />
         <Route
@@ -59,7 +61,13 @@ function MainRoutes() {
         <Route
           path={routes.addSponsor}
           element={
-            isAuth ? <AddSponsors /> : <Navigate to={routes.loginRoute} />
+            isAuth ? <SponsorsForms /> : <Navigate to={routes.loginRoute} />
+          }
+        />
+        <Route
+          path={routes.editSponsor}
+          element={
+            isAuth ? <SponsorsForms /> : <Navigate to={routes.loginRoute} />
           }
         />
         <Route

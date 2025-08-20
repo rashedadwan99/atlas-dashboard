@@ -9,6 +9,8 @@ export const routes = {
   sponsors: "/sponsors",
   addSponsor: "/sponsors/add",
   viewSponsors: "/sponsors/view",
+  editGlobalSponsor: "/sponsors/edit",
+  editSponsor: "/sponsors/edit/:id",
   loginRoute: "/login",
   registerRoute: "/register",
   adsRoute: "/ads",
