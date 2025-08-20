@@ -182,7 +182,7 @@ export default function Sidebar() {
     });
 
   return (
-    <Row style={{ position: "sticky", zIndex: 50 }}>
+    <Row>
       <AppBar
         position="relative"
         sx={{
