@@ -14,6 +14,7 @@ import {
   Avatar,
   Drawer,
 } from "@mui/material";
+
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import ExpandLess from "@mui/icons-material/ExpandLess";
@@ -23,6 +24,8 @@ import GroupIcon from "@mui/icons-material/Group";
 import AddIcon from "@mui/icons-material/Add";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ViewListIcon from "@mui/icons-material/ViewList";
+import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid"; // 📞 Better icon for "Phone Directory"
+
 import Logo from "../logo/Logo";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -45,6 +48,19 @@ export default function Sidebar() {
     removeUserToken();
     dispatch(toggleAuthAction());
   };
+
+  const handleToggleItem = (segment) => {
+    setOpenItems((prev) => ({
+      ...prev,
+      [segment]: !prev[segment],
+    }));
+  };
+
+  const toggleDrawer = () => {
+    setDrawerOpen(!drawerOpen);
+  };
+
+  const { value: user } = useSelector((state) => state.user);
 
   const navItems = [
     {
@@ -95,7 +111,7 @@ export default function Sidebar() {
     {
       segment: "p_dir",
       titleKey: "p_dir",
-      icon: <GroupIcon />,
+      icon: <PhoneAndroidIcon />, // Changed icon here
       children: [
         {
           segment: "a_p_dir",
@@ -118,19 +134,6 @@ export default function Sidebar() {
       onClick: handleLogout,
     },
   ];
-
-  const handleToggleItem = (segment) => {
-    setOpenItems((prev) => ({
-      ...prev,
-      [segment]: !prev[segment],
-    }));
-  };
-
-  const toggleDrawer = () => {
-    setDrawerOpen(!drawerOpen);
-  };
-
-  const { value: user } = useSelector((state) => state.user);
 
   const renderNavItems = (items, depth = 0) =>
     items.map((item, index) => {
@@ -171,7 +174,6 @@ export default function Sidebar() {
       }
 
       const listItemProps = {
-        key: item.segment,
         sx: { pl: 2 + depth * 4, cursor: "pointer", my: 0.8 },
         onClick: () => {
           setDrawerOpen(false);
@@ -181,6 +183,7 @@ export default function Sidebar() {
 
       return (
         <ListItem
+          key={item.segment}
           {...listItemProps}
           component={item.path ? Link : "div"}
           to={item.path || undefined}
