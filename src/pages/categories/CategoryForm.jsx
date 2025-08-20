@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Box, Typography, IconButton, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -7,6 +7,9 @@ import FilePicker from "../../components/common/form/CFilePicker";
 import SectionLayout from "../../components/layout/section/SectionLayout";
 import { useTranslation } from "react-i18next";
 import "./CategoryForm.css";
+import { getUserToken } from "../../services/userService";
+import { addCategory } from "../../services/catergoryService";
+import { CToast } from "../../components/common/toast/CToast";
 
 function CategoryForm() {
   const [data, setData] = useState({
@@ -14,17 +17,33 @@ function CategoryForm() {
     name_fr: "",
     name_en: "",
     sub_category: [],
-    image: "",
+    image: null,
+    ad_price: "",
+    currency: "USD",
   });
 
+  const [files, setFiles] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [subCategory, setSubCategory] = useState({
     name_ar: "",
     name_fr: "",
     name_en: "",
   });
 
-  // حالة لإظهار أو إخفاء قسم إضافة الفئات الفرعية
   const [showSubCategorySection, setShowSubCategorySection] = useState(false);
+
+  // ref للإشارة لآخر عنصر في قائمة sub_category
+  const lastSubCategoryRef = useRef(null);
+
+  // useEffect للتمرير عند تغير sub_category
+  useEffect(() => {
+    if (lastSubCategoryRef.current) {
+      lastSubCategoryRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [data.sub_category]);
 
   const fields = [
     {
@@ -48,12 +67,39 @@ function CategoryForm() {
       value: data.name_fr,
       md: 4,
     },
+    {
+      label: "ad_price",
+      name: "ad_price",
+      required: true,
+      value: data.ad_price,
+      md: 8,
+    },
+    {
+      label: "currency",
+      name: "currency",
+      required: true,
+      value: data.currency,
+      md: 4,
+    },
+    {
+      buttons: [
+        {
+          label: "add_categories",
+          name: "add_categories",
+          type: "submit",
+          variant: "contained",
+          md: 4,
+          loading: isLoading,
+        },
+      ],
+    },
   ];
 
-  const handleFileChange = (files) => {
+  const handleFileChange = (newFiles) => {
+    setFiles(newFiles);
     setData((prev) => ({
       ...prev,
-      image: files[0], // صورة واحدة فقط
+      image: newFiles[0] || null,
     }));
   };
 
@@ -81,7 +127,11 @@ function CategoryForm() {
     },
     {
       buttons: [
-        { label: "add_sub_categories", variant: "contained", type: "submit" },
+        {
+          label: "add_sub_categories",
+          variant: "contained",
+          type: "submit",
+        },
       ],
     },
   ];
@@ -92,15 +142,12 @@ function CategoryForm() {
       !subCategory.name_en.trim() ||
       !subCategory.name_fr.trim()
     ) {
-      // ممكن تضيف تنبيه هنا لو حبيت
       return;
     }
-    setData({
-      ...data,
-      sub_category: [subCategory, ...data.sub_category],
-    });
-
-    // إعادة تعيين الحقول بعد الإضافة
+    setData((prev) => ({
+      ...prev,
+      sub_category: [...prev.sub_category, subCategory], // إضافة في نهاية القائمة لتناسب scrollIntoView
+    }));
     setSubCategory({
       name_ar: "",
       name_fr: "",
@@ -119,6 +166,49 @@ function CategoryForm() {
 
   const { t } = useTranslation();
 
+  const doSubmit = async () => {
+    const formData = new FormData();
+
+    formData.append("api_token", getUserToken());
+    formData.append("name_ar", data.name_ar);
+    formData.append("name_en", data.name_en);
+    formData.append("name_fr", data.name_fr);
+    formData.append("ad_price", data.ad_price);
+    formData.append("currency", data.currency);
+
+    if (data.image) {
+      formData.append("image", data.image);
+    }
+
+    data.sub_category.forEach((item, index) => {
+      formData.append(`sub_category[${index}][name_ar]`, item.name_ar);
+      formData.append(`sub_category[${index}][name_en]`, item.name_en);
+      formData.append(`sub_category[${index}][name_fr]`, item.name_fr);
+    });
+
+    try {
+      setIsLoading(true);
+      await addCategory(formData);
+      CToast("success", "ad_category_success");
+
+      // إعادة تعيين البيانات والملفات
+      setData({
+        name_ar: "",
+        name_fr: "",
+        name_en: "",
+        sub_category: [],
+        image: null,
+        ad_price: "",
+        currency: "USD",
+      });
+      setFiles([]);
+    } catch (error) {
+      // خطأ في الإرسال
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
       <FilePicker
@@ -126,10 +216,16 @@ function CategoryForm() {
         multiple={false}
         accept="image/*"
         maxSizeMB={5}
+        value={files}
         onChange={handleFileChange}
       />
 
-      <CForm fields={fields} data={data} setData={setData} />
+      <CForm
+        fields={fields}
+        data={data}
+        setData={setData}
+        doSubmit={doSubmit}
+      />
 
       <Box mt={3} mb={2} display="flex" justifyContent="center">
         <Button
@@ -145,6 +241,7 @@ function CategoryForm() {
       {showSubCategorySection && (
         <SectionLayout title="add_sub_categories" className="sub_categories">
           <CForm
+            loading={isLoading}
             fields={sFileds}
             data={subCategory}
             setData={setSubCategory}
@@ -154,39 +251,48 @@ function CategoryForm() {
       )}
 
       {data.sub_category.length > 0 && (
-        <Box mt={4}>
+        <Box
+          mt={4}
+          maxHeight={300}
+          overflow="auto"
+          sx={{ border: "1px solid #ddd", borderRadius: 1, p: 2 }}
+        >
           <Typography variant="h6" gutterBottom>
             {t("sub_categories")}
           </Typography>
           <Box display="flex" flexDirection="column" gap={2}>
-            {data.sub_category.map((item, index) => (
-              <Box
-                key={index}
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-                p={2}
-                borderRadius={2}
-                boxShadow={2}
-                bgcolor="#fff"
-              >
-                <Box>
-                  <Typography variant="subtitle1">
-                    {item.name_en || "No name"}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    AR: {item.name_ar || "-"} — FR: {item.name_fr || "-"}
-                  </Typography>
-                </Box>
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
-                  onClick={() => handleDeleteSubCategory(index)}
+            {data.sub_category.map((item, index) => {
+              const isLast = index === data.sub_category.length - 1;
+              return (
+                <Box
+                  key={index}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                  p={2}
+                  borderRadius={2}
+                  boxShadow={2}
+                  bgcolor="#fff"
+                  ref={isLast ? lastSubCategoryRef : null} // الإشارة للعنصر الأخير
                 >
-                  <DeleteIcon color="error" />
-                </IconButton>
-              </Box>
-            ))}
+                  <Box>
+                    <Typography variant="subtitle1">
+                      {item.name_en || "No name"}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      AR: {item.name_ar || "-"} — FR: {item.name_fr || "-"}
+                    </Typography>
+                  </Box>
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => handleDeleteSubCategory(index)}
+                  >
+                    <DeleteIcon color="error" />
+                  </IconButton>
+                </Box>
+              );
+            })}
           </Box>
         </Box>
       )}

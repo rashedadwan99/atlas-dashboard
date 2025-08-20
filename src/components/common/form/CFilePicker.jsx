@@ -39,8 +39,8 @@ export default function FilePicker({
   }, [files]);
 
   const translatedLabel = useMemo(() => {
-    return labelTextKey ? t(labelTextKey) : "";
-  }, [labelTextKey, t]);
+    return labelTextKey ? t(labelTextKey) : label;
+  }, [labelTextKey, label, t]);
 
   const validate = (candidate) => {
     if (candidate.length > maxFiles) return t("max_files_error", { maxFiles });
@@ -92,7 +92,7 @@ export default function FilePicker({
   };
 
   return (
-    <Stack spacing={1.25} alignItems="center">
+    <Stack spacing={1.25} alignItems="center" width="100%">
       {translatedLabel && (
         <Typography variant="subtitle1" align="center">
           {translatedLabel}
@@ -142,7 +142,7 @@ export default function FilePicker({
       </Stack>
 
       {err && (
-        <Typography variant="body2" color="error">
+        <Typography variant="body2" color="error" sx={{ width: "100%" }}>
           {err}
         </Typography>
       )}
@@ -163,6 +163,7 @@ export default function FilePicker({
                       width: "100%",
                       objectFit: "cover",
                       borderRadius: 8,
+                      maxHeight: 250,
                     }}
                   />
                   <Stack
