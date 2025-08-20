@@ -9,6 +9,7 @@ export const generalDataReducer = (state = initialState, action) => {
         categories: action.payload.categories,
         countries: action.payload.countries,
         sponsors: action.payload.sponsors,
+        directories: action.payload.directories,
       };
     default:
       return state;
