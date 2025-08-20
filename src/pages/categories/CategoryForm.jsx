@@ -8,10 +8,18 @@ import SectionLayout from "../../components/layout/section/SectionLayout";
 import { useTranslation } from "react-i18next";
 import "./CategoryForm.css";
 import { getUserToken } from "../../services/userService";
-import { addCategory } from "../../services/catergoryService";
+import { addCategory, updateCategory } from "../../services/catergoryService";
 import { CToast } from "../../components/common/toast/CToast";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getGeneralDataAction } from "../../redux/actions/generalDataActions";
+import { routes } from "../../routes/routes";
 
 function CategoryForm() {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { categories } = useSelector((state) => state.generalData);
   const [data, setData] = useState({
     name_ar: "",
     name_fr: "",
@@ -21,7 +29,19 @@ function CategoryForm() {
     ad_price: "",
     currency: "USD",
   });
+  useEffect(() => {
+    if (id && Array.isArray(categories)) {
+      const cat = categories.find((c) => c._id === id);
+      if (cat) {
+        setData(cat);
 
+        // تمرير الصورة كرابط إلى FilePicker
+        if (cat.image) {
+          setFiles([cat.image]);
+        }
+      }
+    }
+  }, [id, categories]);
   const [files, setFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [subCategory, setSubCategory] = useState({
@@ -83,14 +103,23 @@ function CategoryForm() {
     },
     {
       buttons: [
-        {
-          label: "add_categories",
-          name: "add_categories",
-          type: "submit",
-          variant: "contained",
-          md: 4,
-          loading: isLoading,
-        },
+        id
+          ? {
+              label: "update_categories",
+              name: "update_categories",
+              type: "submit",
+              variant: "contained",
+              md: 4,
+              loading: isLoading,
+            }
+          : {
+              label: "add_categories",
+              name: "add_categories",
+              type: "submit",
+              variant: "contained",
+              md: 4,
+              loading: isLoading,
+            },
       ],
     },
   ];
@@ -185,12 +214,18 @@ function CategoryForm() {
       formData.append(`sub_category[${index}][name_en]`, item.name_en);
       formData.append(`sub_category[${index}][name_fr]`, item.name_fr);
     });
-
     try {
       setIsLoading(true);
-      await addCategory(formData);
-      CToast("success", "ad_category_success");
-
+      if (id) {
+        await updateCategory(formData, id);
+        CToast("success", "update_data_successful");
+        navigate(routes.viewCategories);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        await addCategory(formData);
+        CToast("success", "ad_category_success");
+      }
+      dispatch(getGeneralDataAction());
       // إعادة تعيين البيانات والملفات
       setData({
         name_ar: "",
@@ -225,6 +260,7 @@ function CategoryForm() {
         data={data}
         setData={setData}
         doSubmit={doSubmit}
+        loading={isLoading}
       />
 
       <Box mt={3} mb={2} display="flex" justifyContent="center">

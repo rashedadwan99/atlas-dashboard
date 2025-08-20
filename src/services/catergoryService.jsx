@@ -13,3 +13,10 @@ export const addCategory = (data) => {
     },
   });
 };
+export const updateCategory = (data, id) => {
+  return http.put(apiEndpoint + `/${id}`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};

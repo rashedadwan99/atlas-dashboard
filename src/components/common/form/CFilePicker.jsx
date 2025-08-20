@@ -31,11 +31,24 @@ export default function FilePicker({
   const [err, setErr] = useState("");
 
   const previewUrls = useMemo(() => {
-    return files.map((f) => ({
-      name: f.name,
-      type: f.type,
-      url: URL.createObjectURL(f),
-    }));
+    return files.map((f) => {
+      // If it's a string, treat it as an image URL
+      if (typeof f === "string") {
+        return {
+          name: f,
+          type: "image",
+          url: f,
+          isFromServer: true,
+        };
+      }
+
+      return {
+        name: f.name,
+        type: f.type,
+        url: URL.createObjectURL(f),
+        isFromServer: false,
+      };
+    });
   }, [files]);
 
   const translatedLabel = useMemo(() => {
@@ -46,6 +59,7 @@ export default function FilePicker({
     if (candidate.length > maxFiles) return t("max_files_error", { maxFiles });
 
     for (const f of candidate) {
+      if (typeof f === "string") continue; // skip validation for URLs
       const sizeMB = f.size / (1024 * 1024);
       if (sizeMB > maxSizeMB)
         return t("max_size_error", { name: f.name, maxSizeMB });
@@ -61,7 +75,7 @@ export default function FilePicker({
     const unique = [];
     const seen = new Set();
     for (const f of merged) {
-      const key = `${f.name}-${f.size}`;
+      const key = typeof f === "string" ? f : `${f.name}-${f.size}`;
       if (!seen.has(key)) {
         seen.add(key);
         unique.push(f);
@@ -164,36 +178,6 @@ export default function FilePicker({
                       objectFit: "cover",
                       borderRadius: 8,
                       maxHeight: 250,
-                    }}
-                  />
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    sx={{ mt: 0.5 }}
-                  >
-                    <Typography variant="caption" noWrap title={p.name}>
-                      {p.name}
-                    </Typography>
-                    <IconButton size="small" onClick={() => removeAt(i)}>
-                      <FiTrash2 size={16} />
-                    </IconButton>
-                  </Stack>
-                </Box>
-              ))}
-
-            {/* Video Previews */}
-            {previewUrls
-              .filter((p) => p.type.startsWith("video"))
-              .map((p, i) => (
-                <Box key={p.url} sx={{ mb: 2 }}>
-                  <video
-                    src={p.url}
-                    controls
-                    style={{
-                      width: "100%",
-                      objectFit: "cover",
-                      borderRadius: 8,
                     }}
                   />
                   <Stack

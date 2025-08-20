@@ -12,17 +12,19 @@ import ViewCategories from "../pages/categories/ViewCategories";
 import AddSponsors from "../pages/sponsors/AddSponsors";
 import ViewSponsors from "../pages/sponsors/ViewSponsors";
 import { getMyProfileAction } from "../redux/actions/userActions";
+import { getUserToken } from "../services/userService";
+import EditCategory from "../pages/categories/EditCategory";
 
 function MainRoutes() {
   const { isAuth } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (isAuth) {
+    if (getUserToken()) {
       dispatch(getMyProfileAction());
     }
     dispatch(getAdsAction());
     dispatch(getGeneralDataAction());
-  }, [isAuth]);
+  }, [getUserToken()]);
 
   return (
     <Routes>
@@ -40,6 +42,12 @@ function MainRoutes() {
           path={routes.addCategory}
           element={
             isAuth ? <AddCategories /> : <Navigate to={routes.loginRoute} />
+          }
+        />
+        <Route
+          path={routes.editCategory}
+          element={
+            isAuth ? <EditCategory /> : <Navigate to={routes.loginRoute} />
           }
         />
         <Route
@@ -65,12 +73,12 @@ function MainRoutes() {
       {/* مسار تسجيل الدخول */}
 
       {/* مسار افتراضي لأي رابط غير معروف */}
-      <Route
+      {/* <Route
         path="*"
         element={
           <Navigate to={isAuth ? routes.dashboardRoute : routes.loginRoute} />
         }
-      />
+      /> */}
       <Route
         path={routes.loginRoute}
         element={
