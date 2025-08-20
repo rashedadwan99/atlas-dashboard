@@ -9,6 +9,8 @@ import { toggleAuthAction } from "../../../redux/actions/userActions";
 import "./loginPage.css";
 import { CToast } from "../../../components/common/toast/CToast";
 import { useTranslation } from "react-i18next";
+import { getAdsAction } from "../../../redux/actions/adActions";
+import { getGeneralDataAction } from "../../../redux/actions/generalDataActions";
 
 function LoginPage() {
   const { t } = useTranslation();
@@ -19,15 +21,15 @@ function LoginPage() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const doSubmit = async () => {
     try {
       setIsLoading(true);
       const { data: user } = await loginService(data);
-      if (data.isAdmin) {
+      if (user.isAdmin) {
         setUserToken(user.api_token);
         setIsLoading(false);
-        dispatch(toggleAuthAction(user));
+        dispatch(toggleAuthAction());
         CToast("success", t("login-message"));
       } else {
         const err = new Error("Unauthorized access");
@@ -38,7 +40,6 @@ function LoginPage() {
       setIsLoading(false);
     }
   };
-  const navigate = useNavigate();
   const fields = [
     {
       label: "email",
