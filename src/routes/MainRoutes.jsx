@@ -13,7 +13,7 @@ import AddSponsors from "../pages/sponsors/AddSponsors";
 import ViewSponsors from "../pages/sponsors/ViewSponsors";
 import { getMyProfileAction } from "../redux/actions/userActions";
 import { getUserToken } from "../services/userService";
-import EditCategory from "../pages/categories/EditCategory";
+import EditCategory from "../components/categories/EditCategory";
 
 function MainRoutes() {
   const { isAuth } = useSelector((state) => state.user);

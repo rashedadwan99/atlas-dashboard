@@ -70,13 +70,13 @@ const navItems = [
     children: [
       {
         segment: "addSponsor",
-        titleKey: "add sponsors",
+        titleKey: "add_sponsors",
         icon: <AddIcon />,
         path: routes.addSponsor,
       },
       {
         segment: "viewSponsors",
-        titleKey: "view sponsors",
+        titleKey: "view_sponsors",
         icon: <ViewListIcon />,
         path: routes.viewSponsors,
       },
@@ -182,9 +182,9 @@ export default function Sidebar() {
     });
 
   return (
-    <Row>
+    <Row style={{ position: "sticky", zIndex: 5000000 }}>
       <AppBar
-        position="sticky"
+        position="relative"
         sx={{
           zIndex: (theme) => theme.zIndex.drawer + 1,
           left: "0",

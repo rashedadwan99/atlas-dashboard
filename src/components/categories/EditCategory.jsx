@@ -1,4 +1,4 @@
-import SectionLayout from "../../components/layout/section/SectionLayout";
+import SectionLayout from "../layout/section/SectionLayout";
 import { Col } from "react-bootstrap";
 import CategoryForm from "./CategoryForm";
 

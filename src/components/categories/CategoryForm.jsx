@@ -2,14 +2,14 @@ import { useState, useRef, useEffect } from "react";
 import { Box, Typography, IconButton, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import CForm from "../../components/common/form/CForm";
-import FilePicker from "../../components/common/form/CFilePicker";
-import SectionLayout from "../../components/layout/section/SectionLayout";
+import CForm from "../common/form/CForm";
+import FilePicker from "../common/form/CFilePicker";
+import SectionLayout from "../layout/section/SectionLayout";
 import { useTranslation } from "react-i18next";
 import "./CategoryForm.css";
 import { getUserToken } from "../../services/userService";
 import { addCategory, updateCategory } from "../../services/catergoryService";
-import { CToast } from "../../components/common/toast/CToast";
+import { CToast } from "../common/toast/CToast";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getGeneralDataAction } from "../../redux/actions/generalDataActions";
@@ -105,7 +105,7 @@ function CategoryForm() {
       buttons: [
         id
           ? {
-              label: "update_categories",
+              label: "update_data",
               name: "update_categories",
               type: "submit",
               variant: "contained",
@@ -223,7 +223,7 @@ function CategoryForm() {
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
         await addCategory(formData);
-        CToast("success", "ad_category_success");
+        CToast("success", "ad_data_success");
       }
       dispatch(getGeneralDataAction());
       // إعادة تعيين البيانات والملفات
@@ -275,15 +275,16 @@ function CategoryForm() {
       </Box>
 
       {showSubCategorySection && (
-        <SectionLayout title="add_sub_categories" className="sub_categories">
-          <CForm
-            loading={isLoading}
-            fields={sFileds}
-            data={subCategory}
-            setData={setSubCategory}
-            doSubmit={addSubCategory}
-          />
-        </SectionLayout>
+        // <SectionLayout title="add_sub_categories" className="sub_categories">
+        <CForm
+          title="add_sub_categories"
+          loading={isLoading}
+          fields={sFileds}
+          data={subCategory}
+          setData={setSubCategory}
+          doSubmit={addSubCategory}
+        />
+        // </SectionLayout>
       )}
 
       {data.sub_category.length > 0 && (
