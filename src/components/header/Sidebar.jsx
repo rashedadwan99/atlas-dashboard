@@ -12,14 +12,12 @@ import {
   AppBar,
   IconButton,
   Avatar,
-  Menu,
-  MenuItem,
   Drawer,
 } from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import CategoryIcon from "@mui/icons-material/Category";
 import GroupIcon from "@mui/icons-material/Group";
 import AddIcon from "@mui/icons-material/Add";
@@ -30,86 +28,96 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { routes } from "../../routes/routes";
 import { Row } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { removeUserToken } from "../../services/userService";
+import { toggleAuthAction } from "../../redux/actions/userActions";
 
 const drawerWidth = 340;
-
-const navItems = [
-  {
-    segment: "dashboard",
-    titleKey: "Dashboard",
-    icon: <DashboardIcon />,
-    path: routes.dashboardRoute,
-  },
-  {
-    kind: "divider",
-  },
-  {
-    segment: "categories",
-    titleKey: "categories",
-    icon: <CategoryIcon />,
-    children: [
-      {
-        segment: "addCategory",
-        titleKey: "add categories",
-        icon: <AddIcon />,
-        path: routes.addCategory,
-      },
-      {
-        segment: "viewCategories",
-        titleKey: "view categories",
-        icon: <ViewListIcon />,
-        path: routes.viewCategories,
-      },
-    ],
-  },
-  {
-    segment: "sponsors",
-    titleKey: "sponsors",
-    icon: <GroupIcon />,
-    children: [
-      {
-        segment: "addSponsor",
-        titleKey: "add_sponsors",
-        icon: <AddIcon />,
-        path: routes.addSponsor,
-      },
-      {
-        segment: "viewSponsors",
-        titleKey: "view_sponsors",
-        icon: <ViewListIcon />,
-        path: routes.viewSponsors,
-      },
-    ],
-  },
-  {
-    segment: "p_dir",
-    titleKey: "p_dir",
-    icon: <GroupIcon />,
-    children: [
-      {
-        segment: "a_p_dir",
-        titleKey: "a_p_dir",
-        icon: <AddIcon />,
-        path: routes.addDirectory,
-      },
-      {
-        segment: "v_p_dir",
-        titleKey: "v_p_dir",
-        icon: <ViewListIcon />,
-        path: routes.viewDirectorys,
-      },
-    ],
-  },
-];
 
 export default function Sidebar() {
   const { t } = useTranslation();
   const [openItems, setOpenItems] = React.useState({});
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
+  const dispatch = useDispatch();
   const fontSize = "16px";
+
+  const handleLogout = () => {
+    removeUserToken();
+    dispatch(toggleAuthAction());
+  };
+
+  const navItems = [
+    {
+      segment: "dashboard",
+      titleKey: "Dashboard",
+      icon: <DashboardIcon />,
+      path: routes.dashboardRoute,
+    },
+    { kind: "divider" },
+    {
+      segment: "categories",
+      titleKey: "categories",
+      icon: <CategoryIcon />,
+      children: [
+        {
+          segment: "addCategory",
+          titleKey: "add categories",
+          icon: <AddIcon />,
+          path: routes.addCategory,
+        },
+        {
+          segment: "viewCategories",
+          titleKey: "view categories",
+          icon: <ViewListIcon />,
+          path: routes.viewCategories,
+        },
+      ],
+    },
+    {
+      segment: "sponsors",
+      titleKey: "sponsors",
+      icon: <GroupIcon />,
+      children: [
+        {
+          segment: "addSponsor",
+          titleKey: "add_sponsors",
+          icon: <AddIcon />,
+          path: routes.addSponsor,
+        },
+        {
+          segment: "viewSponsors",
+          titleKey: "view_sponsors",
+          icon: <ViewListIcon />,
+          path: routes.viewSponsors,
+        },
+      ],
+    },
+    {
+      segment: "p_dir",
+      titleKey: "p_dir",
+      icon: <GroupIcon />,
+      children: [
+        {
+          segment: "a_p_dir",
+          titleKey: "a_p_dir",
+          icon: <AddIcon />,
+          path: routes.addDirectory,
+        },
+        {
+          segment: "v_p_dir",
+          titleKey: "v_p_dir",
+          icon: <ViewListIcon />,
+          path: routes.viewDirectorys,
+        },
+      ],
+    },
+    {
+      segment: "logout",
+      titleKey: "logout",
+      icon: <LogoutIcon />,
+      onClick: handleLogout,
+    },
+  ];
 
   const handleToggleItem = (segment) => {
     setOpenItems((prev) => ({
@@ -122,24 +130,8 @@ export default function Sidebar() {
     setDrawerOpen(!drawerOpen);
   };
 
-  const handleAvatarClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleLogout = () => {
-    handleMenuClose();
-    console.log("Logout clicked");
-  };
-
-  const handleProfile = () => {
-    handleMenuClose();
-    console.log("Profile clicked");
-  };
   const { value: user } = useSelector((state) => state.user);
+
   const renderNavItems = (items, depth = 0) =>
     items.map((item, index) => {
       if (item.kind === "divider") {
@@ -151,7 +143,6 @@ export default function Sidebar() {
         return (
           <Box key={item.segment}>
             <ListItem
-              button="true"
               onClick={() => handleToggleItem(item.segment)}
               sx={{ pl: 2 + depth * 4, cursor: "pointer", my: 0.8 }}
             >
@@ -179,13 +170,20 @@ export default function Sidebar() {
         );
       }
 
+      const listItemProps = {
+        key: item.segment,
+        sx: { pl: 2 + depth * 4, cursor: "pointer", my: 0.8 },
+        onClick: () => {
+          setDrawerOpen(false);
+          if (item.onClick) item.onClick();
+        },
+      };
+
       return (
         <ListItem
-          key={item.segment}
-          component={Link}
-          to={item.path || "#"}
-          sx={{ pl: 2 + depth * 4, cursor: "pointer", my: 0.8 }}
-          onClick={() => setDrawerOpen(false)}
+          {...listItemProps}
+          component={item.path ? Link : "div"}
+          to={item.path || undefined}
         >
           <ListItemIcon sx={{ color: "var(--dark-blue)", minWidth: 32 }}>
             {item.icon}
@@ -242,38 +240,17 @@ export default function Sidebar() {
           </Box>
 
           <Box
-            onClick={handleAvatarClick}
             sx={{
               display: "flex",
               alignItems: "center",
-              cursor: "pointer",
+              cursor: "default",
               color: "white",
             }}
           >
             <Avatar sx={{ backgroundColor: "var(--light-blue)" }}>
               {user?.name?.[0]}
             </Avatar>
-
-            <ArrowDropDownIcon sx={{ color: "var(--dark-blue)" }} />
           </Box>
-
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            sx={{ marginTop: "10px" }}
-          >
-            <MenuItem onClick={handleProfile}>{t("profile")}</MenuItem>
-            <MenuItem onClick={handleLogout}>{t("logout")}</MenuItem>
-          </Menu>
         </Toolbar>
       </AppBar>
 
