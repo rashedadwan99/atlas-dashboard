@@ -16,6 +16,8 @@ import { getUserToken } from "../services/userService";
 import EditCategory from "../components/categories/EditCategory";
 import CategoriesForms from "../pages/categories/CategoriesForms";
 import SponsorsForms from "../pages/sponsors/SponsorsForms";
+import ViewDirectories from "../pages/directories/ViewDirectories";
+import DirectoryForms from "../pages/directories/DirectoryForms";
 
 function MainRoutes() {
   const { isAuth } = useSelector((state) => state.user);
@@ -74,6 +76,24 @@ function MainRoutes() {
           path={routes.viewSponsors}
           element={
             isAuth ? <ViewSponsors /> : <Navigate to={routes.loginRoute} />
+          }
+        />
+        <Route
+          path={routes.addDirectory}
+          element={
+            isAuth ? <DirectoryForms /> : <Navigate to={routes.loginRoute} />
+          }
+        />
+        <Route
+          path={routes.editDirectory}
+          element={
+            isAuth ? <DirectoryForms /> : <Navigate to={routes.loginRoute} />
+          }
+        />
+        <Route
+          path={routes.viewDirectorys}
+          element={
+            isAuth ? <ViewDirectories /> : <Navigate to={routes.loginRoute} />
           }
         />
       </Route>

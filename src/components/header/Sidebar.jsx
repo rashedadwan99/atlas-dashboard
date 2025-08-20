@@ -82,6 +82,25 @@ const navItems = [
       },
     ],
   },
+  {
+    segment: "p_dir",
+    titleKey: "p_dir",
+    icon: <GroupIcon />,
+    children: [
+      {
+        segment: "a_p_dir",
+        titleKey: "a_p_dir",
+        icon: <AddIcon />,
+        path: routes.addDirectory,
+      },
+      {
+        segment: "v_p_dir",
+        titleKey: "v_p_dir",
+        icon: <ViewListIcon />,
+        path: routes.viewDirectorys,
+      },
+    ],
+  },
 ];
 
 export default function Sidebar() {

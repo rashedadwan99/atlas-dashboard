@@ -1,7 +1,7 @@
-import SectionLayout from "../../components/layout/section/SectionLayout";
-import CategoryForm from "../../components/categories/CategoryForm";
 import { Col } from "react-bootstrap";
 import { useParams } from "react-router-dom";
+import SectionLayout from "../../components/layout/section/SectionLayout";
+import CategoryForm from "../../components/categories/CategoryForm";
 
 function CategoriesForms() {
   const { id } = useParams();

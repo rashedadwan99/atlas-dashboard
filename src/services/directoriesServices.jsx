@@ -8,18 +8,18 @@ const apiEndpoint = API_BASE_URL + "/directories";
 export const getDirectories = () => {
   return http.get(apiEndpoint);
 };
-export const addDirectory = () => {
-  return http.post(apiEndpoint, { ...data, api_toke: getUserToken() });
+export const addDirectory = (data) => {
+  return http.post(apiEndpoint, { ...data, api_token: getUserToken() });
 };
-export const updateDirectory = (data) => {
-  return http.put(apiEndpoint + `${data._id}`, {
+export const updateDirectory = (data, id) => {
+  return http.put(apiEndpoint + `/${id}`, {
     ...data,
-    api_toke: getUserToken(),
+    api_token: getUserToken(),
   });
 };
 export const deleteDirectory = (data) => {
   return http.delete(apiEndpoint + `${data._id}`, {
     ...data,
-    api_toke: getUserToken(),
+    api_token: getUserToken(),
   });
 };
