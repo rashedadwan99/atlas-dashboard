@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { routes } from "../../routes/routes";
 import { addSponsor, updateSponsor } from "../../services/sponsors";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import FilePicker from "../../components/common/form/CFilePicker";
 import CForm from "../../components/common/form/CForm";
 import { getUserToken } from "../../services/userService";
+import { CToast } from "../../components/common/toast/CToast";
+import { getGeneralDataAction } from "../../redux/actions/generalDataActions";
 
 function SponsorsForm() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const { sponsors } = useSelector((state) => state.generalData);
   const [files, setFiles] = useState([]);
@@ -94,7 +97,7 @@ function SponsorsForm() {
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
         await addSponsor(formData);
-        CToast("success", "ad_data_success");
+        CToast("success", "add_data_success");
       }
       dispatch(getGeneralDataAction());
       // إعادة تعيين البيانات والملفات

@@ -223,7 +223,7 @@ function CategoryForm() {
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
         await addCategory(formData);
-        CToast("success", "ad_data_success");
+        CToast("success", "add_data_success");
       }
       dispatch(getGeneralDataAction());
       // إعادة تعيين البيانات والملفات
