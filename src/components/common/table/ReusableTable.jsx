@@ -66,23 +66,28 @@ const DashboardTable = ({ data, columns, searchPath }) => {
         <Table>
           <TableHead>
             <TableRow>
-              {columns.map((col) => (
-                <TableCell key={col.id || col.label}>{t(col.label)}</TableCell>
-              ))}
-              {/* Always add createdAt as the last column */}
-              <TableCell>{t("created_at")}</TableCell>
+              {[...columns, ...[{ label: "created_at", date: true }]].map(
+                (col) => (
+                  <TableCell key={col.id || col.label}>
+                    {t(col.label)}
+                  </TableCell>
+                )
+              )}
             </TableRow>
           </TableHead>
 
           <TableBody>
             {paginatedData?.map((item) => (
               <TableRow key={item._id}>
-                {columns.map((col, i) => (
-                  <TableCell key={i}>{col.render(item, currentLang)}</TableCell>
-                ))}
-                <TableCell>
-                  {item.createdAt ? date(item.createdAt) : "-"}
-                </TableCell>
+                {[...columns, ...[{ label: "created_at", date: true }]].map(
+                  (col, i) => (
+                    <TableCell key={i}>
+                      {col.date
+                        ? date(item.createdAt)
+                        : col.render(item, currentLang)}
+                    </TableCell>
+                  )
+                )}
               </TableRow>
             ))}
           </TableBody>
