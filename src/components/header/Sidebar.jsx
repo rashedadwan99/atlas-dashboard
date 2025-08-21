@@ -71,6 +71,19 @@ export default function Sidebar() {
     },
     { kind: "divider" },
     {
+      segment: "users",
+      titleKey: "users",
+      icon: <CategoryIcon />,
+      children: [
+        {
+          segment: "viewUsers",
+          titleKey: "viewUsers",
+          icon: <ViewListIcon />,
+          path: routes.viewuserss,
+        },
+      ],
+    },
+    {
       segment: "categories",
       titleKey: "categories",
       icon: <CategoryIcon />,
@@ -268,6 +281,9 @@ export default function Sidebar() {
             boxSizing: "border-box",
             width: drawerWidth,
             mt: "80px",
+            maxHeight: "87vh !important",
+            overflowY: "auto", // ✅ makes drawer scrollable
+            overflowX: "hidden",
           },
         }}
       >

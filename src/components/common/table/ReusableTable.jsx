@@ -7,37 +7,33 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Typography,
   TextField,
   TablePagination,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { getCurrentLang } from "../../../services/httpService";
+import { useDate } from "../../../hooks/useDate";
 
-/**
- * تنسيق التاريخ
- */
-function formatDate(str) {
-  if (!str) return "-";
-  const date = new Date(str);
-  return date.toLocaleDateString();
-}
-
-const DashboardTable = ({ data, columns }) => {
-  const { t } = useTranslation(); // ✅ استخدام الترجمة
+const DashboardTable = ({ data, columns, searchPath }) => {
+  const { t } = useTranslation();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const currentLang = localStorage.getItem("i18nextLng") || "ar";
+  const currentLang = getCurrentLang() || "ar";
+  const date = useDate();
 
+  /** 🔍 filter by search term */
   const filteredData = useMemo(() => {
     return data?.filter((item) => {
-      const value = item[`name_${currentLang}`]?.toLowerCase() || "";
-      return value.includes(searchTerm.toLowerCase());
+      const value =
+        item[`name_${currentLang}`]?.toLowerCase() || item[searchPath];
+      return value?.toString().toLowerCase().includes(searchTerm.toLowerCase());
     });
   }, [data, searchTerm, currentLang]);
 
+  /** 📄 pagination */
   const paginatedData = useMemo(() => {
     const start = page * rowsPerPage;
     return filteredData?.slice(start, start + rowsPerPage);
@@ -45,6 +41,7 @@ const DashboardTable = ({ data, columns }) => {
 
   return (
     <Paper sx={{ width: "100%", overflowX: "auto", p: 2 }}>
+      {/* 🔍 Search bar */}
       <div
         style={{
           display: "flex",
@@ -64,33 +61,38 @@ const DashboardTable = ({ data, columns }) => {
         />
       </div>
 
+      {/* 📊 Table */}
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
-              {columns?.map((col) => (
-                <TableCell key={col.id}>{t(col.label)}</TableCell>
+              {columns.map((col) => (
+                <TableCell key={col.id || col.label}>{t(col.label)}</TableCell>
               ))}
+              {/* Always add createdAt as the last column */}
+              <TableCell>{t("created_at")}</TableCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
             {paginatedData?.map((item) => (
               <TableRow key={item._id}>
-                {columns.map((col) => (
-                  <TableCell key={col.id}>
-                    {col.render(item, currentLang)}
-                  </TableCell>
+                {columns.map((col, i) => (
+                  <TableCell key={i}>{col.render(item, currentLang)}</TableCell>
                 ))}
+                <TableCell>
+                  {item.createdAt ? date(item.createdAt) : "-"}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
 
+      {/* 📑 Pagination */}
       <TablePagination
         component="div"
-        count={filteredData?.length}
+        count={filteredData?.length || 0}
         page={page}
         onPageChange={(_, newPage) => setPage(newPage)}
         rowsPerPage={rowsPerPage}

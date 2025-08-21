@@ -15,6 +15,11 @@ export const routes = {
   addDirectory: "/directory/add",
   viewDirectorys: "/directory/view",
   editGlobaldirectory: "/directory/edit",
+
+  editusers: "/users/edit/:id",
+  addusers: "/users/add",
+  viewuserss: "/users/view",
+  editGlobalusers: "/users/edit",
   loginRoute: "/login",
   registerRoute: "/register",
   adsRoute: "/ads",

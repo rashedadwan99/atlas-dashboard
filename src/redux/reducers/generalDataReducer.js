@@ -10,6 +10,7 @@ export const generalDataReducer = (state = initialState, action) => {
         countries: action.payload.countries,
         sponsors: action.payload.sponsors,
         directories: action.payload.directories,
+        users: action.payload.users,
       };
     default:
       return state;

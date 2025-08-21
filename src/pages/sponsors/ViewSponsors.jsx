@@ -51,7 +51,7 @@ function ViewSponsors() {
     },
   ];
   return (
-    <SectionLayout title="categories">
+    <SectionLayout title="sponsors">
       <DashboardTable data={sponsors} columns={columns} />
     </SectionLayout>
   );

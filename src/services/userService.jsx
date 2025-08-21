@@ -24,3 +24,6 @@ export const getMyProfileService = () => {
     params: { api_token: getUserToken() },
   });
 };
+export const getAllUsersService = () => {
+  return http.get(apiEndpoint + "/all");
+};

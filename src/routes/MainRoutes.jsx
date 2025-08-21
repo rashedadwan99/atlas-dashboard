@@ -18,6 +18,7 @@ import CategoriesForms from "../pages/categories/CategoriesForms";
 import SponsorsForms from "../pages/sponsors/SponsorsForms";
 import ViewDirectories from "../pages/directories/ViewDirectories";
 import DirectoryForms from "../pages/directories/DirectoryForms";
+import ViewUsers from "../pages/users/ViewUsers";
 
 function MainRoutes() {
   const { isAuth } = useSelector((state) => state.user);
@@ -95,6 +96,10 @@ function MainRoutes() {
           element={
             isAuth ? <ViewDirectories /> : <Navigate to={routes.loginRoute} />
           }
+        />
+        <Route
+          path={routes.viewuserss}
+          element={isAuth ? <ViewUsers /> : <Navigate to={routes.loginRoute} />}
         />
       </Route>
 
