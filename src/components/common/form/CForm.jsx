@@ -46,7 +46,7 @@ const CForm = memo(({ data, fields, setData, loading, title, doSubmit }) => {
           return f.buttons ? (
             f?.buttons?.map((b, i) => {
               return (
-                <Col sm={b.sm} key={i} className="my-2">
+                <Col sm={b?.sm} key={i} className="my-2">
                   <CButton
                     onClick={b.type === "submit" ? handleSubmit : b.onClick}
                     variant={b.variant}
@@ -56,8 +56,8 @@ const CForm = memo(({ data, fields, setData, loading, title, doSubmit }) => {
                 </Col>
               );
             })
-          ) : f.type === "select" ? (
-            <Col key={i} sm={f?.sm ?? 12} className="my-2">
+          ) : f.type === "select" || f.options ? (
+            <Col key={i} sm={f?.sm ?? 12} md={f?.md ?? 12} className="my-2">
               <CSelect
                 label={t(f?.label)}
                 f={f}

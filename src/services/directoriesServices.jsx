@@ -17,9 +17,10 @@ export const updateDirectory = (data, id) => {
     api_token: getUserToken(),
   });
 };
-export const deleteDirectory = (data) => {
-  return http.delete(apiEndpoint + `${data._id}`, {
-    ...data,
-    api_token: getUserToken(),
+export const deleteDirectory = (id) => {
+  return http.delete(apiEndpoint + `/${id}`, {
+    params: {
+      api_token: getUserToken(),
+    },
   });
 };

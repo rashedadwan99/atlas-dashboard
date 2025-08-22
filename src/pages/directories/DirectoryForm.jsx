@@ -11,47 +11,104 @@ import {
 import { CToast } from "../../components/common/toast/CToast";
 
 function DirectoryForm() {
-  const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const { directories } = useSelector((state) => state.generalData);
-  const [data, setData] = useState({
-    address: "",
-    phone: "",
-    country: "",
-  });
+  const { directories, categories, countries } = useSelector(
+    (state) => state.generalData
+  );
+  const { id } = useParams();
+  // useEffect(() => {
+  //   const updatedData = { ...data };
+
+  //   if (categoryId) {
+  //     updatedData.category = categoryId;
+  //   }
+
+  //   if (id) {
+  //     updatedData.country = id;
+  //   }
+
+  //   if (categoryId || id) {
+  //     setData(updatedData);
+  //   }
+  // }, [categoryId, id]);
   useEffect(() => {
     if (id && Array.isArray(directories)) {
       const dir = directories.find((c) => c._id === id);
+      dir.category = dir.category?._id;
+      dir.country = dir.country?._id;
       if (dir) {
         setData(dir);
       }
     }
   }, [id, directories]);
+  const [data, setData] = useState({
+    notes: "",
+    image: "",
+    name: "",
+    address: "",
+    phone: "",
+    email: "",
+    country: "",
+    category: "",
+  });
   const fields = [
+    {
+      label: "name",
+      name: "name",
+      required: true,
+      value: data.name,
+      // md: 4,
+    },
+
+    {
+      label: "category",
+      name: "category",
+      required: true,
+      options: categories,
+      translate: true,
+      type: "select",
+      value: data.category,
+      md: 6,
+    },
     {
       label: "country",
       name: "country",
-      type: "text",
       required: true,
+      options: countries,
+      type: "select",
       value: data.country,
-      md: 4,
+      md: 6,
+    },
+    // {
+    //   label: "email",
+    //   name: "email",
+    //   value: data.email,
+    //   type: "email",
+
+    //   md: 4,
+    // },
+    {
+      label: "phone",
+      name: "phone",
+      type: "tel",
+      value: data.phone,
+      md: 6,
     },
     {
       label: "address",
       name: "address",
-      required: true,
       value: data.address,
-      md: 4,
+      md: 6,
     },
     {
-      label: "phone",
-      type: "tel",
-      name: "phone",
-      required: true,
-      value: data.phone,
-      md: 4,
+      label: "notes",
+      name: "notes",
+      type: "textarea",
+      rows: 5,
+      value: data.notes,
+      md: 12,
     },
 
     {
@@ -89,9 +146,14 @@ function DirectoryForm() {
       dispatch(getGeneralDataAction());
       // إعادة تعيين البيانات والملفات
       setData({
+        note: "",
+        image: "",
+        name: "",
         address: "",
-        country: "",
         phone: "",
+        email: "",
+        country: "",
+        category: "",
       });
     } catch (error) {
       // خطأ في الإرسال
@@ -99,6 +161,7 @@ function DirectoryForm() {
       setIsLoading(false);
     }
   };
+
   return (
     <>
       <CForm
