@@ -9,6 +9,8 @@ import { approveAd, deleteAd } from "../../services/adServices";
 import CButton from "../../components/common/button/CButton";
 import { useState } from "react";
 import { getAllAdsActions } from "../../redux/actions/adActions";
+import CModal from "../../components/common/modal/CModal";
+import AdsContainer from "./AdsConatiner";
 
 export default function ViewAds() {
   const { pendingAds, approvedAds } = useSelector((state) => state.ads);
@@ -25,6 +27,15 @@ export default function ViewAds() {
       setIsLoading(false);
     }
   };
+  const [open, setIsOpen] = useState(false);
+  const [ad, setAd] = useState([]);
+  const handleOpenModal = (item) => {
+    setIsOpen(true);
+    const arr = [];
+    arr.push(item);
+    setAd(arr);
+  };
+  console.log(ad);
   const isPendingPath = routes.pAds === pathname;
   const columns = [
     {
@@ -73,7 +84,13 @@ export default function ViewAds() {
       id: "view", // مفتاح عام، نستخدمه فقط كمعرف
       label: "view",
       render: (item) => {
-        return <CButton variant="outlined" label="view" />;
+        return (
+          <CButton
+            variant="outlined"
+            label="view"
+            onClick={() => handleOpenModal(item)}
+          />
+        );
       }, // عرض الاسم حسب اللغة
     },
     {
@@ -96,13 +113,18 @@ export default function ViewAds() {
   ];
 
   return (
-    <SectionLayout title={isPendingPath ? "pendingAds" : "approvedAds"}>
-      <DashboardTable
-        data={isPendingPath ? pendingAds : approvedAds}
-        columns={columns}
-        onDelete={deleteAd}
-        // addPath={routes.addCategory}
-      />
-    </SectionLayout>
+    <>
+      <SectionLayout title={isPendingPath ? "pendingAds" : "approvedAds"}>
+        <DashboardTable
+          data={isPendingPath ? pendingAds : approvedAds}
+          columns={columns}
+          onDelete={deleteAd}
+          // addPath={routes.addCategory}
+        />
+      </SectionLayout>
+      <CModal open={open} setIsOpen={setIsOpen}>
+        <AdsContainer data={ad} />
+      </CModal>
+    </>
   );
 }

@@ -25,7 +25,8 @@ import GroupIcon from "@mui/icons-material/Group";
 import AddIcon from "@mui/icons-material/Add";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ViewListIcon from "@mui/icons-material/ViewList";
-import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid"; // 📞 Better icon for "Phone Directory"
+import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
+import CampaignIcon from "@mui/icons-material/Campaign"; // ✅ NEW: Ad icon
 
 import Logo from "../logo/Logo";
 import { Link } from "react-router-dom";
@@ -87,7 +88,7 @@ export default function Sidebar() {
     {
       segment: "ads",
       titleKey: "ads",
-      icon: <PeopleIcon />,
+      icon: <CampaignIcon />, // ✅ Updated icon here
       children: [
         {
           segment: "pendingAds",
@@ -144,7 +145,7 @@ export default function Sidebar() {
     {
       segment: "p_dir",
       titleKey: "p_dir",
-      icon: <PhoneAndroidIcon />, // Changed icon here
+      icon: <PhoneAndroidIcon />,
       children: [
         {
           segment: "a_p_dir",
@@ -240,7 +241,6 @@ export default function Sidebar() {
         position: "sticky",
         top: 0,
         zIndex: 10000,
-
         background: !drawerOpen
           ? "linear-gradient(to bottom, var(--blue-gray) 70%, rgba(255, 255, 255, 0.5))"
           : "var(--white)",
@@ -312,7 +312,7 @@ export default function Sidebar() {
             width: drawerWidth,
             mt: "80px",
             maxHeight: "87vh !important",
-            overflowY: "auto", // ✅ makes drawer scrollable
+            overflowY: "auto",
             overflowX: "hidden",
           },
         }}

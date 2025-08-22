@@ -1,4 +1,8 @@
 /* الوضع الافتراضي: الأسهم خارج الصورة */
+.media-carousel {
+  padding: 0 10px;
+}
+
 .media-carousel .carousel-control-prev {
   left: -30px;
 }
