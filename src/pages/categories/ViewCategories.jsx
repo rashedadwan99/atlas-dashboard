@@ -2,16 +2,16 @@ import { useSelector } from "react-redux";
 import Translation from "../../components/common/translation/Translation";
 import DashboardTable from "../../components/common/table/ReusableTable";
 import Cimg from "../../components/common/image/Cimg";
-import CButton from "../../components/common/button/CButton";
 import SectionLayout from "../../components/layout/section/SectionLayout";
 import { useNavigate } from "react-router-dom";
 import { routes } from "../../routes/routes";
+import { deleteCategory } from "../../services/catergoryService";
 
 export default function ViewCategories() {
   const { categories } = useSelector((state) => state.generalData);
   const navigate = useNavigate();
-  const goToEditForm = (id) => {
-    navigate(routes.editGlobalCategory + `/${id}`);
+  const goToEditForm = (item) => {
+    navigate(routes.editGlobalCategory + `/${item._id}`);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const columns = [
@@ -37,23 +37,17 @@ export default function ViewCategories() {
           "-"
         ),
     },
-    {
-      id: "edit",
-      label: "Edit",
-      render: (item) => (
-        <CButton
-          variant="contained"
-          color="primary"
-          onClick={() => goToEditForm(item._id)}
-          label="edit"
-        />
-      ),
-    },
   ];
 
   return (
     <SectionLayout title="categories">
-      <DashboardTable data={categories} columns={columns} />
+      <DashboardTable
+        data={categories}
+        columns={columns}
+        onEdit={goToEditForm}
+        addPath={routes.addCategory}
+        onDelete={deleteCategory}
+      />
     </SectionLayout>
   );
 }

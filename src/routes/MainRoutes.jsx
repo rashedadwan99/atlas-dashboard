@@ -29,7 +29,7 @@ function MainRoutes() {
     }
     dispatch(getAdsAction());
     dispatch(getGeneralDataAction());
-  }, [getUserToken()]);
+  }, [getUserToken(), isAuth]);
 
   return (
     <Routes>

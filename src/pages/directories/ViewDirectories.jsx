@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import CButton from "../../components/common/button/CButton";
 import { useNavigate } from "react-router-dom";
 import { routes } from "../../routes/routes";
+import { deleteDirectory } from "../../services/directoriesServices";
 
 function ViewDirectories() {
   const { directories } = useSelector((state) => state.generalData);
@@ -34,22 +35,15 @@ function ViewDirectories() {
         return item.phone;
       }, // عرض الاسم حسب اللغة
     },
-    {
-      id: "edit",
-      label: "Edit",
-      render: (item) => (
-        <CButton
-          variant="contained"
-          color="primary"
-          onClick={() => goToEditForm(item._id)}
-          label="edit"
-        />
-      ),
-    },
   ];
   return (
     <SectionLayout title="p_dir">
-      <DashboardTable data={directories} columns={columns} />
+      <DashboardTable
+        data={directories}
+        columns={columns}
+        onEdit={goToEditForm}
+        onDelete={deleteDirectory}
+      />
     </SectionLayout>
   );
 }

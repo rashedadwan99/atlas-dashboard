@@ -19,11 +19,15 @@ export const loginService = (data) => {
 export const registerService = (data) => {
   return http.get(apiEndpoint + "/register", { params: data });
 };
-export const getMyProfileService = () => {
-  return http.get(apiEndpoint + "/", {
-    params: { api_token: getUserToken() },
-  });
-};
+
 export const getAllUsersService = () => {
   return http.get(apiEndpoint + "/all");
+};
+export const deleteUserService = (id) => {
+  return http.delete(apiEndpoint + `/delete`, { params: { id } });
+};
+export const getMyProfileService = () => {
+  return http.get(apiEndpoint + "/getProfile", {
+    params: { api_token: getUserToken() },
+  });
 };
