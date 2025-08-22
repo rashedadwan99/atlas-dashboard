@@ -143,7 +143,7 @@ const DashboardTable = ({
                     </TableCell>
                   )
                 )}
-                {typeof onEdit === "function" ?? (
+                {onEdit ? (
                   <TableCell>
                     <CButton
                       variant="contained"
@@ -153,6 +153,8 @@ const DashboardTable = ({
                       label="edit"
                     />
                   </TableCell>
+                ) : (
+                  <></>
                 )}
                 <TableCell>
                   <CButton
