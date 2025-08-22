@@ -35,9 +35,8 @@ function ViewDirectories() {
       <DashboardTable
         data={directories}
         columns={columns}
-        onEdit={goToEditForm}
-        onDelete={deleteDirectory}
         editPath={routes.editGlobaldirectory}
+        onDelete={deleteDirectory}
       />
     </SectionLayout>
   );
