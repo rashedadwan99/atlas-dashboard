@@ -3,7 +3,7 @@ import { TOGGLE_LOADING_ADS } from "../actions/adActions";
 
 const initialState = {
   isLoading: false,
-  allAds: [],
+  pendingAds: [],
   myAds: [],
 };
 export const adsReducer = (state = initialState, action) => {
@@ -16,7 +16,8 @@ export const adsReducer = (state = initialState, action) => {
     case GET_ADS:
       return {
         ...state,
-        allAds: action.payload,
+        pendingAds: action.payload.pendingAds,
+        approvedAds: action.payload.approvedAds,
         isLoading: false,
       };
     case GET_MY_ADS:

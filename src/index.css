@@ -6,6 +6,7 @@
 @import '@fontsource/roboto/400.css';
 @import '@fontsource/roboto/500.css';
 @import '@fontsource/roboto/700.css';
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
 
 body {
   margin: 0;
@@ -26,5 +27,6 @@ p {
 }
 
 * {
-  font-family: "Work Sans", sans-serif !important;
+  /* font-family: "Work Sans", sans-serif !important; */
+  font-family: 'Cairo', sans-serif !important;
 }

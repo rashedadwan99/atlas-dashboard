@@ -15,8 +15,29 @@ export const addAd = async (data) => {
     }
   );
 };
-export const getAds = async () => {
+export const getPendingAds = async () => {
   return http.get(apiEndpoint);
+};
+export const getApprovedAds = async () => {
+  return http.get(apiEndpoint + "/approved");
+};
+export const approveAd = async (id) => {
+  return http.put(
+    apiEndpoint + `/approve/${id}`,
+    {},
+    {
+      params: {
+        api_token: getUserToken(),
+      },
+    }
+  );
+};
+export const deleteAd = async (id) => {
+  return http.delete(apiEndpoint + `/delete/${id}`, {
+    params: {
+      api_token: getUserToken(),
+    },
+  });
 };
 export const getMyAds = async () => {
   return http.post(apiEndpoint + "/my-ads", {

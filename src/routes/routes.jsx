@@ -23,5 +23,6 @@ export const routes = {
   loginRoute: "/login",
   registerRoute: "/register",
   adsRoute: "/ads",
+  pAds: "/ads/pending",
   adRoute: "/ads/:id",
 };

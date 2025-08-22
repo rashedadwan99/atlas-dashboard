@@ -42,7 +42,7 @@ function ViewUsers() {
         data={users}
         columns={columns}
         searchPath="name"
-        onDelete={deleteUserService}
+        // onDelete={deleteUserService}
       />
     </SectionLayout>
   );

@@ -85,6 +85,25 @@ export default function Sidebar() {
       ],
     },
     {
+      segment: "ads",
+      titleKey: "ads",
+      icon: <PeopleIcon />,
+      children: [
+        {
+          segment: "pendingAds",
+          titleKey: "pendingAds",
+          icon: <ViewListIcon />,
+          path: routes.pAds,
+        },
+        {
+          segment: "approvedAds",
+          titleKey: "approvedAds",
+          icon: <ViewListIcon />,
+          path: routes.adsRoute,
+        },
+      ],
+    },
+    {
       segment: "categories",
       titleKey: "categories",
       icon: <CategoryIcon />,

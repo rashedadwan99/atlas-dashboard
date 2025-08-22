@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "../pages/auth/login/LoginPage";
 import Dashboard from "../pages/dashboard/Dashboard";
 import PageLayout from "../components/layout/PageLayout";
-import { getAdsAction } from "../redux/actions/adActions";
+import { getAllAdsActions } from "../redux/actions/adActions";
 import { getGeneralDataAction } from "../redux/actions/generalDataActions";
 import { routes } from "./routes";
 import { useEffect } from "react";
@@ -19,6 +19,7 @@ import SponsorsForms from "../pages/sponsors/SponsorsForms";
 import ViewDirectories from "../pages/directories/ViewDirectories";
 import DirectoryForms from "../pages/directories/DirectoryForms";
 import ViewUsers from "../pages/users/ViewUsers";
+import ViewAds from "../pages/ads/ViewAds";
 
 function MainRoutes() {
   const { isAuth } = useSelector((state) => state.user);
@@ -27,9 +28,9 @@ function MainRoutes() {
     if (getUserToken()) {
       dispatch(getMyProfileAction());
     }
-    dispatch(getAdsAction());
+    dispatch(getAllAdsActions());
     dispatch(getGeneralDataAction());
-  }, [getUserToken(), isAuth]);
+  }, [getUserToken()]);
 
   return (
     <Routes>
@@ -42,6 +43,14 @@ function MainRoutes() {
         <Route
           path={routes.dashboardRoute}
           element={isAuth ? <Dashboard /> : <Navigate to={routes.loginRoute} />}
+        />
+        <Route
+          path={routes.pAds}
+          element={isAuth ? <ViewAds /> : <Navigate to={routes.loginRoute} />}
+        />
+        <Route
+          path={routes.adsRoute}
+          element={isAuth ? <ViewAds /> : <Navigate to={routes.loginRoute} />}
         />
         <Route
           path={routes.addCategory}

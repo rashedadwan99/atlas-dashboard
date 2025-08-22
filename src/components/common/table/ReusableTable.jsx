@@ -24,14 +24,15 @@ import { getGeneralDataAction } from "../../../redux/actions/generalDataActions"
 import { CToast } from "../toast/CToast";
 import { useNavigate } from "react-router-dom";
 import CButton from "../button/CButton";
+import { getAllAdsActions } from "../../../redux/actions/adActions";
 
 const DashboardTable = ({
   data,
   columns,
   searchPath,
   onDelete,
-  onEdit,
   addPath,
+  editPath,
 }) => {
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
@@ -78,6 +79,7 @@ const DashboardTable = ({
         setIsLoading(true);
         await onDelete(selectedRow._id);
         dispatch(getGeneralDataAction());
+        dispatch(getAllAdsActions());
         CToast("success", "deleted");
         setIsLoading(false);
       } catch (error) {
@@ -143,28 +145,35 @@ const DashboardTable = ({
                     </TableCell>
                   )
                 )}
-                {onEdit ? (
+                {editPath ? (
                   <TableCell>
                     <CButton
                       variant="contained"
                       color="info"
                       size="small"
-                      onClick={() => onEdit(item)}
+                      onClick={() => {
+                        navigate(editPath + `/${item._id}`);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
                       label="edit"
                     />
                   </TableCell>
                 ) : (
                   <></>
                 )}
-                <TableCell>
-                  <CButton
-                    variant="contained"
-                    color="error"
-                    size="small"
-                    onClick={() => handleOpenDialog(item)}
-                    label="delete"
-                  />
-                </TableCell>
+                {onDelete ? (
+                  <TableCell>
+                    <CButton
+                      variant="contained"
+                      color="error"
+                      size="small"
+                      onClick={() => handleOpenDialog(item)}
+                      label="delete"
+                    />
+                  </TableCell>
+                ) : (
+                  <></>
+                )}
               </TableRow>
             ))}
           </TableBody>

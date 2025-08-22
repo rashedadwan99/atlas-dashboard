@@ -9,7 +9,7 @@ import { toggleAuthAction } from "../../../redux/actions/userActions";
 import "./loginPage.css";
 import { CToast } from "../../../components/common/toast/CToast";
 import { useTranslation } from "react-i18next";
-import { getAdsAction } from "../../../redux/actions/adActions";
+import { getAllAdsActions } from "../../../redux/actions/adActions";
 import { getGeneralDataAction } from "../../../redux/actions/generalDataActions";
 
 function LoginPage() {

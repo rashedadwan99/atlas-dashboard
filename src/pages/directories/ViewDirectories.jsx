@@ -1,18 +1,12 @@
 import SectionLayout from "../../components/layout/section/SectionLayout";
 import DashboardTable from "../../components/common/table/ReusableTable";
 import { useSelector } from "react-redux";
-import CButton from "../../components/common/button/CButton";
-import { useNavigate } from "react-router-dom";
 import { routes } from "../../routes/routes";
 import { deleteDirectory } from "../../services/directoriesServices";
 
 function ViewDirectories() {
   const { directories } = useSelector((state) => state.generalData);
-  const navigate = useNavigate();
-  const goToEditForm = (id) => {
-    navigate(routes.editGlobaldirectory + `/${id}`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+
   const columns = [
     {
       id: "country", // مفتاح عام، نستخدمه فقط كمعرف
@@ -43,6 +37,7 @@ function ViewDirectories() {
         columns={columns}
         onEdit={goToEditForm}
         onDelete={deleteDirectory}
+        editPath={routes.editGlobaldirectory}
       />
     </SectionLayout>
   );

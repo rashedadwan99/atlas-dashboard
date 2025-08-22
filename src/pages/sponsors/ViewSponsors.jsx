@@ -1,7 +1,5 @@
-// src/pages/sponsors/ViewSponsors.jsx
 import { routes } from "../../routes/routes";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import SectionLayout from "../../components/layout/section/SectionLayout";
 import Cimg from "../../components/common/image/Cimg";
 import DashboardTable from "../../components/common/table/ReusableTable";
@@ -9,12 +7,6 @@ import { deleteSponsor } from "../../services/sponsors";
 
 function ViewSponsors() {
   const { sponsors } = useSelector((state) => state.generalData);
-  const navigate = useNavigate();
-
-  const goToEditForm = (id) => {
-    navigate(routes.editGlobalSponsor + `/${id}`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   const columns = [
     {
@@ -41,7 +33,7 @@ function ViewSponsors() {
         data={sponsors}
         columns={columns}
         searchPath="name" // ✅ ensure search works
-        onEdit={(item) => goToEditForm(item._id)}
+        editPath={routes.editGlobalSponsor}
         onDelete={deleteSponsor}
         addPath={routes.addSponsor}
       />
