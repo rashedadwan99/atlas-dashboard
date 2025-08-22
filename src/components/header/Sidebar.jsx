@@ -14,7 +14,8 @@ import {
   Avatar,
   Drawer,
 } from "@mui/material";
-
+import HandshakeIcon from "@mui/icons-material/Handshake";
+import PeopleIcon from "@mui/icons-material/People";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import ExpandLess from "@mui/icons-material/ExpandLess";
@@ -73,7 +74,7 @@ export default function Sidebar() {
     {
       segment: "users",
       titleKey: "users",
-      icon: <CategoryIcon />,
+      icon: <PeopleIcon />,
       children: [
         {
           segment: "viewUsers",
@@ -105,7 +106,7 @@ export default function Sidebar() {
     {
       segment: "sponsors",
       titleKey: "sponsors",
-      icon: <GroupIcon />,
+      icon: <HandshakeIcon />,
       children: [
         {
           segment: "addSponsor",
@@ -215,9 +216,19 @@ export default function Sidebar() {
     });
 
   return (
-    <Row>
+    <Row
+      style={{
+        position: "sticky",
+        top: 0,
+        zIndex: 10000,
+
+        background: !drawerOpen
+          ? "linear-gradient(to bottom, var(--blue-gray) 70%, rgba(255, 255, 255, 0.5))"
+          : "var(--white)",
+      }}
+    >
       <AppBar
-        position="relative"
+        position="sticky"
         sx={{
           zIndex: (theme) => theme.zIndex.drawer + 1,
           left: "0",

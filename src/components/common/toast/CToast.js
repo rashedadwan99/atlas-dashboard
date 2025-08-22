@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 
 export const CToast = (status, message, autoClose = 4000, onClick) => {
   return toast[status](i18next.t(message), {
-    position: "top-right",
+    position: "bottom-right",
     autoClose,
     hideProgressBar: false,
     closeOnClick: true,
