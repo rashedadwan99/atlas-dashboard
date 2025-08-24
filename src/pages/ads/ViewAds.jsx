@@ -80,6 +80,14 @@ export default function ViewAds() {
         return <Translation object={item.sub_category} path="name" />;
       }, // عرض الاسم حسب اللغة
     },
+
+    {
+      id: "paymentStatus", // مفتاح عام، نستخدمه فقط كمعرف
+      label: "paymentStatus",
+      render: (item) => {
+        return item.paymentStatus;
+      }, // عرض الاسم حسب اللغة
+    },
     {
       id: "view", // مفتاح عام، نستخدمه فقط كمعرف
       label: "view",
@@ -119,7 +127,7 @@ export default function ViewAds() {
           data={isPendingPath ? pendingAds : approvedAds}
           columns={columns}
           onDelete={deleteAd}
-          // addPath={routes.addCategory}
+          searchPath="title"
         />
       </SectionLayout>
       <CModal open={open} setIsOpen={setIsOpen}>

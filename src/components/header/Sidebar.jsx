@@ -83,6 +83,12 @@ export default function Sidebar() {
           icon: <ViewListIcon />,
           path: routes.viewuserss,
         },
+        {
+          segment: "admins",
+          titleKey: "admins",
+          icon: <ViewListIcon />,
+          path: routes.viewadmins,
+        },
       ],
     },
     {

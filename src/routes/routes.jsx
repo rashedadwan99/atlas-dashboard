@@ -19,6 +19,7 @@ export const routes = {
   editusers: "/users/edit/:id",
   addusers: "/users/add",
   viewuserss: "/users/view",
+  viewadmins: "/users/view/admins",
   editGlobalusers: "/users/edit",
   loginRoute: "/login",
   registerRoute: "/register",

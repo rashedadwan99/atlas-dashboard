@@ -110,6 +110,10 @@ function MainRoutes() {
           path={routes.viewuserss}
           element={isAuth ? <ViewUsers /> : <Navigate to={routes.loginRoute} />}
         />
+        <Route
+          path={routes.viewadmins}
+          element={isAuth ? <ViewUsers /> : <Navigate to={routes.loginRoute} />}
+        />
       </Route>
 
       {/* مسار تسجيل الدخول */}

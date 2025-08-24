@@ -5,11 +5,11 @@ import { useTranslation } from "react-i18next";
 
 function Dashboard() {
   const { categories, users } = useSelector((state) => state.generalData);
-  const { pendingAds } = useSelector((state) => state.ads);
+  const { approvedAds } = useSelector((state) => state.ads);
   const { value: user } = useSelector((state) => state.user);
   const { t } = useTranslation();
 
-  const adsCount = pendingAds?.length || 0;
+  const adsCount = approvedAds?.length || 0;
   const categoriesCount = categories?.length || 0;
   const usersCount = users?.length || 0;
 
@@ -58,12 +58,12 @@ function Dashboard() {
                     series={[{ data: [value] }]}
                     categories={[""]}
                     height={100}
-                    width="100%"
+                    width={200}
                     sx={{ flexGrow: 1 }}
-                    colors={["primary.main"]}
+                    colors={["var(--light-blue)"]}
                     valueAxisFormat={(val) => val.toString()}
-                    xAxisVisible={false}
-                    yAxisVisible={false}
+                    // xAxisVisible={false}
+                    // yAxisVisible={false}
                     animation
                   />
                 </Box>

@@ -24,7 +24,27 @@ export const getAllUsersService = () => {
   return http.get(apiEndpoint + "/all");
 };
 export const deleteUserService = (id) => {
-  return http.delete(apiEndpoint + `/delete`, { params: { id } });
+  return http.delete(apiEndpoint + `/delete`, {
+    params: { id, api_token: getUserToken() },
+  });
+};
+export const activateUserService = (id) => {
+  return http.put(
+    apiEndpoint + `/activate`,
+    {},
+    {
+      params: { id, api_token: getUserToken() },
+    }
+  );
+};
+export const deActivateUserService = (id) => {
+  return http.put(
+    apiEndpoint + `/de-activate`,
+    {},
+    {
+      params: { id, api_token: getUserToken() },
+    }
+  );
 };
 export const getMyProfileService = () => {
   return http.get(apiEndpoint + "/getProfile", {
