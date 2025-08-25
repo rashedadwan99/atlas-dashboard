@@ -61,10 +61,10 @@ function Dashboard() {
                     width={200}
                     sx={{ flexGrow: 1 }}
                     colors={["var(--light-blue)"]}
-                    valueAxisFormat={(val) => val.toString()}
-                    // xAxisVisible={false}
-                    // yAxisVisible={false}
-                    animation
+                    // valueaxisformat={(val) => val.toString()}
+                    xaxisvisible="false"
+                    yaxisvisible="false"
+                    animation="true"
                   />
                 </Box>
               </CardContent>

@@ -6,8 +6,9 @@ import { ToastContainer } from "react-toastify";
 function App() {
   return (
     <Container fluid className="app-container">
-      <ToastContainer />
-      <MainRoutes />
+      {/* <ToastContainer />
+      <MainRoutes /> */}
+      <h1>حسبي الله و نعم الوكيل فيكي يا نصابة</h1>
     </Container>
   );
 }
